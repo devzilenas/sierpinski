@@ -1,0 +1,4 @@
+Sierpinski
+==========
+
+Creates Sierpinski triangle (▲).
