@@ -7,23 +7,49 @@ import java.awt.Color;
 import java.io.IOException;
 import java.util.Arrays;
 
+/**
+ * Demonstrates usage of Sierpinski class.
+ *
+ * @author Marius Žilėnas
+ * @since 2014-12-11
+ */
 public class SierpinskiDemo
 {
+	/**
+	 * Number of arguments required.
+	 */
+	public static final int REQUIRED_ARGS = 5;
+
 	public static void main(String[] args)
 	{
-		if (5 == args.length)
+		/**
+		 * Sierpinski triangle we will be generating.
+		 */
+		Sierpinski sierpinski = null;
+		/**
+		 * Output file.
+		 */
+		File       file       = null;
+		/**
+		 * MIME for the image output.
+		 */
+		String     type       = null;
+
+		if (REQUIRED_ARGS == args.length)
 		{
-			Sierpinski sierpinski = 
+			sierpinski = 
 				new Sierpinski(
 						Integer.valueOf(args[0]),
 						Integer.valueOf(args[1]),
 						Integer.valueOf(args[2]));
-			String outputType = args[3];
-			File   file       = new File(args[4]);
+			type = args[3];
+
+			file = new File(args[4]);
 
 			sierpinski.generate();
 			toFile(
 				toImage(sierpinski),
+				type,
 				file);
 		}
 		else
@@ -33,11 +59,22 @@ public class SierpinskiDemo
 		}
 	}
 
-	public static void toFile(BufferedImage img, File file)
+	/**
+	 * Saves buffered image to a given file.
+	 *
+	 * @param img image to be save to the file
+	 *
+	 * @param type Type name of the MIME for image
+	 *
+	 * @param file file to save an image to
+	 * 
+	 * @see javax.imageio.ImageIO#getWriterMIMEType
+	 */
+	public static void toFile(BufferedImage img, String type, File file)
 	{
 		try
 		{
-			ImageIO.write(img, "png", file);
+			ImageIO.write(img, type, file);
 		}
 		catch (IOException e)
 		{
@@ -45,6 +82,12 @@ public class SierpinskiDemo
 		}
 	}
 
+	/**
+	 * Creates an image from the given Sierpinski triangle.
+	 *
+	 * @param sierpinski triangle to generate picture of
+	 * @return image of the Sierpinski triangle
+	 */
 	public static BufferedImage toImage(Sierpinski sierpinski)
 	{
 		BufferedImage img = new BufferedImage(
@@ -64,15 +107,20 @@ public class SierpinskiDemo
 		return img;
 	}
 
+	/**
+	 * Describes the program.
+	 */
 	public static void usage()
 	{
 		System.out.println("Required parameters <width> <height> <limit of a 3angle's side size> <output type> <output filename>" );
 		System.out.println("Available output types" + Arrays.toString(ImageIO.getWriterMIMETypes()));
 	}
 
+	/**
+	 * Exits the program.
+	 */
 	public static void exit()
 	{
 		System.exit(-1);
 	}
-
 }
